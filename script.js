@@ -1,81 +1,41 @@
-/*
-  Las fotografías deben estar dentro
-  de la carpeta "images" con estos nombres:
-
-  foto_1.jpeg
-  foto_2.jpeg
-  ...
-  foto_12.jpeg
-*/
-
-const TOTAL_FOTOS = 12;
+const TOTAL_FOTOS = 5;
 
 const galleryImages = Array.from(
   { length: TOTAL_FOTOS },
   (_, index) => {
     const number = index + 1;
-    const path = `images/foto_${number}.jpeg`;
+    const path = `images/foto_${number}.png`;
 
     return {
       src: path,
       download: path,
-
-      title:
-        `Recuerdo ${String(number).padStart(2, "0")}`,
-
-      eyebrow:
-        `Fotografía ${String(number).padStart(2, "0")}`,
-
-      alt:
-        `Fotografía ${number} de Diana`
+      title: `Recuerdo ${String(number).padStart(2, "0")}`,
+      eyebrow: `Fotografía ${String(number).padStart(2, "0")}`,
+      alt: `Fotografía ${number} de Diana`
     };
   }
 );
 
-/* ELEMENTOS DEL CARRUSEL */
-
-const gallery =
-  document.querySelector("#galeria");
-
-const carousel =
-  document.querySelector("#carousel");
-
-const track =
-  document.querySelector("#carouselTrack");
-
-const dotsContainer =
-  document.querySelector("#carouselDots");
-
-const previousButton =
-  document.querySelector("#previousButton");
-
-const nextButton =
-  document.querySelector("#nextButton");
-
-const activeEyebrow =
-  document.querySelector("#activeEyebrow");
-
-const activeTitle =
-  document.querySelector("#activeTitle");
-
-/* ESTADO */
+const gallery = document.querySelector("#galeria");
+const carousel = document.querySelector("#carousel");
+const track = document.querySelector("#carouselTrack");
+const dotsContainer = document.querySelector("#carouselDots");
+const previousButton = document.querySelector("#previousButton");
+const nextButton = document.querySelector("#nextButton");
+const activeEyebrow = document.querySelector("#activeEyebrow");
+const activeTitle = document.querySelector("#activeTitle");
 
 let activeIndex = 0;
 let autoplay;
 let pointerStart = null;
-
-/* FUNCIONES AUXILIARES */
 
 function twoDigits(number) {
   return String(number).padStart(2, "0");
 }
 
 function circularOffset(index) {
-  let offset =
-    index - activeIndex;
-
-  const middle =
-    galleryImages.length / 2;
+  let offset = index - activeIndex;
+  const middle = galleryImages.length / 2;
 
   if (offset > middle) {
     offset -= galleryImages.length;
@@ -88,204 +48,151 @@ function circularOffset(index) {
   return offset;
 }
 
-/* CREAR GALERÍA */
-
 function createGallery() {
-  galleryImages.forEach(
-    (image, index) => {
-      const card =
-        document.createElement("article");
+  galleryImages.forEach((image, index) => {
+    const card = document.createElement("article");
 
-      card.className =
-        "photo-card";
+    card.className = "photo-card";
+    card.dataset.index = index;
 
-      card.dataset.index =
-        index;
+    card.innerHTML = `
+      <div class="photo-frame">
 
-      card.innerHTML = `
-        <div class="photo-frame">
+        <div class="image-fallback">
+          <span>
+            Foto ${twoDigits(index + 1)}
+          </span>
+        </div>
 
-          <div class="image-fallback">
+        <img
+          src="${image.src}"
+          alt="${image.alt}"
+          draggable="false"
+        >
 
-            <span>
-              Foto ${twoDigits(index + 1)}
-            </span>
+        <div class="photo-shade"></div>
 
-          </div>
+        <div class="card-topline">
 
-          <img
-            src="${image.src}"
-            alt="${image.alt}"
-            draggable="false"
-          >
+          <span>
+            ${image.eyebrow}
+          </span>
 
-          <div class="photo-shade"></div>
-
-          <div class="card-topline">
-
-            <span>
-              ${image.eyebrow}
-            </span>
-
-            <span>
-              ${twoDigits(index + 1)}
-            </span>
-
-          </div>
-
-          <div class="card-caption">
-
-            <div class="card-caption-text">
-
-              <span>
-                Un recuerdo para Diana
-              </span>
-
-              <h2>
-                ${image.title}
-              </h2>
-
-            </div>
-
-            <a
-              class="download-button"
-              href="${image.download}"
-              download="recuerdo-diana-${index + 1}.jpeg"
-              aria-label="Descargar ${image.title}"
-            >
-              Descargar
-            </a>
-
-          </div>
+          <span>
+            ${twoDigits(index + 1)}
+          </span>
 
         </div>
-      `;
 
-      const photo =
-        card.querySelector("img");
+        <div class="card-caption">
 
-      photo.addEventListener(
-        "error",
-        () => {
-          photo.remove();
-        }
-      );
+          <div class="card-caption-text">
 
-      card.addEventListener(
-        "click",
-        (event) => {
-          if (
-            event.target.closest(
-              ".download-button"
-            )
-          ) {
-            return;
-          }
+            <span>
+              Un recuerdo para Diana
+            </span>
 
-          goTo(index);
-        }
-      );
+            <h2>
+              ${image.title}
+            </h2>
 
-      track.appendChild(card);
+          </div>
 
-      const dot =
-        document.createElement("button");
+          <a
+            class="download-button"
+            href="${image.download}"
+            download="recuerdo-diana-${index + 1}.png"
+            aria-label="Descargar ${image.title}"
+          >
+            Descargar
+          </a>
 
-      dot.type =
-        "button";
+        </div>
 
-      dot.setAttribute(
-        "aria-label",
-        `Ver ${image.title}`
-      );
+      </div>
+    `;
 
-      dot.addEventListener(
-        "click",
-        () => {
-          goTo(index);
-        }
-      );
+    const photo = card.querySelector("img");
 
-      dotsContainer.appendChild(dot);
-    }
-  );
+    photo.addEventListener("error", () => {
+      photo.remove();
+    });
+
+    card.addEventListener("click", event => {
+      if (event.target.closest(".download-button")) {
+        return;
+      }
+
+      goTo(index);
+    });
+
+    track.appendChild(card);
+
+    const dot = document.createElement("button");
+
+    dot.type = "button";
+
+    dot.setAttribute(
+      "aria-label",
+      `Ver ${image.title}`
+    );
+
+    dot.addEventListener("click", () => {
+      goTo(index);
+    });
+
+    dotsContainer.appendChild(dot);
+  });
 
   updateGallery();
 }
 
-/* ACTUALIZAR CARRUSEL */
-
 function updateGallery() {
   const cards = [
-    ...track.querySelectorAll(
-      ".photo-card"
-    )
+    ...track.querySelectorAll(".photo-card")
   ];
 
   const dots = [
-    ...dotsContainer.querySelectorAll(
-      "button"
-    )
+    ...dotsContainer.querySelectorAll("button")
   ];
 
-  cards.forEach(
-    (card, index) => {
-      const offset =
-        circularOffset(index);
+  cards.forEach((card, index) => {
+    const offset = circularOffset(index);
+    const distance = Math.abs(offset);
+    const isVisible = distance <= 2;
+    const isActive = offset === 0;
 
-      const distance =
-        Math.abs(offset);
+    card.style.setProperty("--offset", offset);
+    card.style.setProperty("--distance", distance);
 
-      const isVisible =
-        distance <= 2;
+    card.dataset.visible = String(isVisible);
 
-      const isActive =
-        offset === 0;
+    card.classList.toggle(
+      "is-active",
+      isActive
+    );
 
-      card.style.setProperty(
-        "--offset",
-        offset
-      );
+    card.setAttribute(
+      "aria-hidden",
+      String(!isActive)
+    );
+  });
 
-      card.style.setProperty(
-        "--distance",
-        distance
-      );
+  dots.forEach((dot, index) => {
+    const isActive = index === activeIndex;
 
-      card.dataset.visible =
-        String(isVisible);
+    dot.classList.toggle(
+      "is-active",
+      isActive
+    );
 
-      card.classList.toggle(
-        "is-active",
-        isActive
-      );
+    dot.toggleAttribute(
+      "aria-current",
+      isActive
+    );
+  });
 
-      card.setAttribute(
-        "aria-hidden",
-        String(!isActive)
-      );
-    }
-  );
-
-  dots.forEach(
-    (dot, index) => {
-      const isActive =
-        index === activeIndex;
-
-      dot.classList.toggle(
-        "is-active",
-        isActive
-      );
-
-      dot.toggleAttribute(
-        "aria-current",
-        isActive
-      );
-    }
-  );
-
-  const currentImage =
-    galleryImages[activeIndex];
+  const currentImage = galleryImages[activeIndex];
 
   activeEyebrow.textContent =
     currentImage.eyebrow;
@@ -293,8 +200,6 @@ function updateGallery() {
   activeTitle.textContent =
     currentImage.title;
 }
-
-/* NAVEGACIÓN */
 
 function goTo(index) {
   activeIndex =
@@ -315,22 +220,17 @@ function previous() {
   goTo(activeIndex - 1);
 }
 
-/* REPRODUCCIÓN AUTOMÁTICA */
-
 function startAutoplay() {
   stopAutoplay();
 
-  autoplay =
-    window.setInterval(
-      next,
-      5200
-    );
+  autoplay = window.setInterval(
+    next,
+    5200
+  );
 }
 
 function stopAutoplay() {
-  window.clearInterval(
-    autoplay
-  );
+  window.clearInterval(autoplay);
 }
 
 previousButton.addEventListener(
@@ -353,13 +253,10 @@ carousel.addEventListener(
   startAutoplay
 );
 
-/* DESLIZAMIENTO */
-
 carousel.addEventListener(
   "pointerdown",
-  (event) => {
-    pointerStart =
-      event.clientX;
+  event => {
+    pointerStart = event.clientX;
 
     carousel.setPointerCapture(
       event.pointerId
@@ -369,19 +266,15 @@ carousel.addEventListener(
 
 carousel.addEventListener(
   "pointerup",
-  (event) => {
+  event => {
     if (pointerStart === null) {
       return;
     }
 
     const distance =
-      event.clientX -
-      pointerStart;
+      event.clientX - pointerStart;
 
-    if (
-      Math.abs(distance) >
-      45
-    ) {
+    if (Math.abs(distance) > 45) {
       if (distance < 0) {
         next();
       } else {
@@ -400,22 +293,14 @@ carousel.addEventListener(
   }
 );
 
-/* TECLADO */
-
 window.addEventListener(
   "keydown",
-  (event) => {
-    if (
-      event.key ===
-      "ArrowRight"
-    ) {
+  event => {
+    if (event.key === "ArrowRight") {
       next();
     }
 
-    if (
-      event.key ===
-      "ArrowLeft"
-    ) {
+    if (event.key === "ArrowLeft") {
       previous();
     }
 
@@ -428,8 +313,6 @@ window.addEventListener(
   }
 );
 
-/* PAUSA CUANDO LA PÁGINA NO ESTÁ VISIBLE */
-
 document.addEventListener(
   "visibilitychange",
   () => {
@@ -441,48 +324,32 @@ document.addEventListener(
   }
 );
 
-/* ANIMACIÓN AL HACER SCROLL */
-
 const revealElements =
-  document.querySelectorAll(
-    ".reveal"
-  );
+  document.querySelectorAll(".reveal");
 
 const revealObserver =
   new IntersectionObserver(
     (entries, observer) => {
-      entries.forEach(
-        (entry) => {
-          if (
-            entry.isIntersecting
-          ) {
-            entry.target.classList.add(
-              "is-visible"
-            );
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add(
+            "is-visible"
+          );
 
-            observer.unobserve(
-              entry.target
-            );
-          }
+          observer.unobserve(
+            entry.target
+          );
         }
-      );
+      });
     },
     {
       threshold: 0.12
     }
   );
 
-revealElements.forEach(
-  (element) => {
-    revealObserver.observe(
-      element
-    );
-  }
-);
-
-/* =========================================
-   RECORRIDO GUIADO
-========================================= */
+revealElements.forEach(element => {
+  revealObserver.observe(element);
+});
 
 const tourLayer =
   document.querySelector("#tourLayer");
@@ -540,7 +407,7 @@ const tourSteps = [
     icon: "→",
     title: "Explora el carrusel",
     text:
-      "Utiliza las flechas o desliza la pantalla para recorrer las doce fotografías."
+      "Utiliza las flechas o desliza la pantalla para recorrer las ocho fotografías."
   },
   {
     target:
@@ -563,11 +430,8 @@ let tourStepIndex = 0;
 let tourIsActive = false;
 let tourStartedAutomatically = false;
 
-/* BUSCAR EL ELEMENTO DEL PASO ACTUAL */
-
 function getTourTarget() {
-  const step =
-    tourSteps[tourStepIndex];
+  const step = tourSteps[tourStepIndex];
 
   if (!step.target) {
     return null;
@@ -578,37 +442,26 @@ function getTourTarget() {
   );
 }
 
-/* POSICIONAR LA ILUMINACIÓN */
-
 function positionTourElements() {
   if (!tourIsActive) {
     return;
   }
 
-  const target =
-    getTourTarget();
-
-  const step =
-    tourSteps[tourStepIndex];
+  const target = getTourTarget();
+  const step = tourSteps[tourStepIndex];
 
   tourStepNumber.textContent =
     `Paso ${tourStepIndex + 1} de ${tourSteps.length}`;
 
-  tourIcon.textContent =
-    step.icon;
-
-  tourTitle.textContent =
-    step.title;
-
-  tourText.textContent =
-    step.text;
+  tourIcon.textContent = step.icon;
+  tourTitle.textContent = step.title;
+  tourText.textContent = step.text;
 
   tourPreviousButton.disabled =
     tourStepIndex === 0;
 
   tourNextButton.textContent =
-    tourStepIndex ===
-    tourSteps.length - 1
+    tourStepIndex === tourSteps.length - 1
       ? "Entendido"
       : "Siguiente";
 
@@ -649,14 +502,19 @@ function positionTourElements() {
   tourSpotlight.style.height =
     `${rect.height + padding * 2}px`;
 
-  const popoverWidth =
-    Math.min(
-      370,
-      window.innerWidth - 32
-    );
+  const isMobile =
+    window.innerWidth <= 640;
 
-  const estimatedHeight = 300;
-  const gap = 22;
+  const popoverWidth = Math.min(
+    isMobile ? 330 : 370,
+    window.innerWidth - 28
+  );
+
+  const estimatedHeight =
+    isMobile ? 250 : 300;
+
+  const gap =
+    isMobile ? 14 : 22;
 
   let popoverTop =
     rect.bottom + gap;
@@ -672,32 +530,30 @@ function positionTourElements() {
       gap;
   }
 
-  popoverTop =
-    Math.max(
-      16,
-      Math.min(
-        popoverTop,
-        window.innerHeight -
-        estimatedHeight -
-        16
-      )
-    );
+  popoverTop = Math.max(
+    14,
+    Math.min(
+      popoverTop,
+      window.innerHeight -
+      estimatedHeight -
+      14
+    )
+  );
 
   let popoverLeft =
     rect.left +
     rect.width / 2 -
     popoverWidth / 2;
 
-  popoverLeft =
-    Math.max(
-      16,
-      Math.min(
-        popoverLeft,
-        window.innerWidth -
-        popoverWidth -
-        16
-      )
-    );
+  popoverLeft = Math.max(
+    14,
+    Math.min(
+      popoverLeft,
+      window.innerWidth -
+      popoverWidth -
+      14
+    )
+  );
 
   tourPopover.style.top =
     `${popoverTop}px`;
@@ -706,20 +562,16 @@ function positionTourElements() {
     `${popoverLeft}px`;
 }
 
-/* MOSTRAR UN PASO */
-
 function showTourStep(index) {
-  tourStepIndex =
-    Math.max(
-      0,
-      Math.min(
-        index,
-        tourSteps.length - 1
-      )
-    );
+  tourStepIndex = Math.max(
+    0,
+    Math.min(
+      index,
+      tourSteps.length - 1
+    )
+  );
 
-  const target =
-    getTourTarget();
+  const target = getTourTarget();
 
   if (target) {
     target.scrollIntoView({
@@ -735,8 +587,6 @@ function showTourStep(index) {
     positionTourElements();
   }
 }
-
-/* INICIAR RECORRIDO */
 
 function startTour() {
   stopAutoplay();
@@ -756,8 +606,6 @@ function startTour() {
   showTourStep(0);
 }
 
-/* CERRAR RECORRIDO */
-
 function closeTour() {
   tourIsActive = false;
 
@@ -772,8 +620,6 @@ function closeTour() {
 
   startAutoplay();
 }
-
-/* BOTONES DEL RECORRIDO */
 
 tourNextButton.addEventListener(
   "click",
@@ -816,8 +662,6 @@ tourReplayButton.addEventListener(
   startTour
 );
 
-/* REPOSICIONAR SI CAMBIA EL TAMAÑO */
-
 window.addEventListener(
   "resize",
   () => {
@@ -827,40 +671,31 @@ window.addEventListener(
   }
 );
 
-/* MOSTRAR AUTOMÁTICAMENTE AL LLEGAR A LA GALERÍA */
-
 const galleryTourObserver =
   new IntersectionObserver(
     (entries, observer) => {
-      entries.forEach(
-        (entry) => {
-          if (
-            entry.isIntersecting &&
-            !tourStartedAutomatically
-          ) {
-            tourStartedAutomatically =
-              true;
+      entries.forEach(entry => {
+        if (
+          entry.isIntersecting &&
+          !tourStartedAutomatically
+        ) {
+          tourStartedAutomatically = true;
 
-            window.setTimeout(
-              startTour,
-              700
-            );
+          window.setTimeout(
+            startTour,
+            700
+          );
 
-            observer.disconnect();
-          }
+          observer.disconnect();
         }
-      );
+      });
     },
     {
       threshold: 0.32
     }
   );
 
-/* INICIAR */
-
 createGallery();
 startAutoplay();
 
-galleryTourObserver.observe(
-  gallery
-);
+galleryTourObserver.observe(gallery);
