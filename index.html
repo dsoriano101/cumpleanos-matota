@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="theme-color"
+    content="#f7f4ee"
+  >
+
+  <meta
+    name="description"
+    content="Una invitación especial para celebrar la vida de Diana De Peña."
+  >
+
+  <title>Celebrando la vida de Diana</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ENTRADA -->
+
+  <section class="welcome" id="inicio">
+
+    <div class="welcome-light welcome-light-one"></div>
+    <div class="welcome-light welcome-light-two"></div>
+
+    <div class="welcome-content">
+
+      <blockquote class="welcome-quote">
+
+        <span class="quote-mark" aria-hidden="true">
+          “
+        </span>
+
+        <p>
+          Porque donde esté su tesoro,
+          allí estará también su corazón.
+        </p>
+
+        <footer>
+          <span></span>
+          Mateo 6:21
+          <span></span>
+        </footer>
+
+      </blockquote>
+
+      <a
+        class="primary-button"
+        href="#invitacion"
+      >
+        Descubrir la invitación
+
+        <span aria-hidden="true">
+          ↓
+        </span>
+      </a>
+
+    </div>
+
+    <div class="scroll-indicator" aria-hidden="true">
+      <span></span>
+      Desliza para continuar
+    </div>
+
+  </section>
+
+  <main>
+
+    <!-- INVITACIÓN -->
+
+    <section
+      class="invitation reveal"
+      id="invitacion"
+    >
+
+      <span class="section-symbol" aria-hidden="true">
+        ✦
+      </span>
+
+      <p class="section-eyebrow">
+        Una invitación para ti
+      </p>
+
+      <h1>
+        Celebremos juntos la vida de
+        <strong>Diana De Peña.</strong>
+      </h1>
+
+      <p class="invitation-message">
+        Te invito a celebrar la vida de Diana De Peña.
+        Eres parte de su tesoro y de su corazón.
+        Sería maravilloso que puedas estar.
+      </p>
+
+      <a
+        class="text-button"
+        href="#galeria"
+      >
+        Preparar mi recuerdo
+
+        <span aria-hidden="true">
+          ↘
+        </span>
+      </a>
+
+    </section>
+
+    <!-- GALERÍA -->
+
+    <section
+      class="gallery reveal"
+      id="galeria"
+      aria-label="Galería de fotografías de Diana"
+    >
+
+      <header class="gallery-heading">
+
+        <div>
+
+          <p class="section-eyebrow">
+            Galería de recuerdos
+          </p>
+
+          <h2>
+            Elige tu fotografía
+          </h2>
+
+          <p class="gallery-description">
+            Selecciona una fotografía para convertirla
+            en un recuerdo especial para Diana.
+          </p>
+
+        </div>
+
+        <button
+          class="tour-replay-button"
+          id="tourReplayButton"
+          type="button"
+        >
+          <span aria-hidden="true">?</span>
+          Ver instrucciones
+        </button>
+
+      </header>
+
+      <!-- CARRUSEL -->
+
+      <div
+        class="carousel"
+        id="carousel"
+      >
+
+        <div
+          class="carousel-track"
+          id="carouselTrack"
+        ></div>
+
+        <button
+          class="carousel-arrow arrow-left"
+          id="previousButton"
+          type="button"
+          aria-label="Ver fotografía anterior"
+        >
+          ←
+        </button>
+
+        <button
+          class="carousel-arrow arrow-right"
+          id="nextButton"
+          type="button"
+          aria-label="Ver fotografía siguiente"
+        >
+          →
+        </button>
+
+      </div>
+
+      <!-- INDICADORES -->
+
+      <div class="carousel-footer">
+
+        <div
+          class="carousel-dots"
+          id="carouselDots"
+          aria-label="Seleccionar una fotografía"
+        ></div>
+
+        <p class="active-information">
+
+          <span id="activeEyebrow">
+            Fotografía 01
+          </span>
+
+          <strong id="activeTitle">
+            Recuerdo 01
+          </strong>
+
+        </p>
+
+      </div>
+
+    </section>
+
+    <!-- CIERRE -->
+
+    <section class="closing-message reveal">
+
+      <span class="section-symbol" aria-hidden="true">
+        ✦
+      </span>
+
+      <p>
+        Gracias por ser parte de su tesoro,
+        de su corazón y de esta celebración.
+      </p>
+
+      <span class="closing-signature">
+        Celebrando la vida de Diana
+      </span>
+
+    </section>
+
+  </main>
+
+  <!-- RECORRIDO GUIADO -->
+
+  <div
+    class="tour-layer"
+    id="tourLayer"
+    aria-hidden="true"
+  >
+
+    <div
+      class="tour-spotlight"
+      id="tourSpotlight"
+    ></div>
+
+    <div
+      class="tour-popover"
+      id="tourPopover"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="tourTitle"
+    >
+
+      <div class="tour-progress">
+
+        <span id="tourStepNumber">
+          Paso 1 de 5
+        </span>
+
+        <button
+          class="tour-close"
+          id="tourCloseButton"
+          type="button"
+          aria-label="Cerrar instrucciones"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <span
+        class="tour-icon"
+        id="tourIcon"
+        aria-hidden="true"
+      >
+        ✦
+      </span>
+
+      <h3 id="tourTitle">
+        Elige un recuerdo
+      </h3>
+
+      <p id="tourText">
+        Esta es la galería de fotografías de Diana.
+      </p>
+
+      <div class="tour-actions">
+
+        <button
+          class="tour-skip"
+          id="tourSkipButton"
+          type="button"
+        >
+          Omitir
+        </button>
+
+        <div>
+
+          <button
+            class="tour-previous"
+            id="tourPreviousButton"
+            type="button"
+          >
+            Anterior
+          </button>
+
+          <button
+            class="tour-next"
+            id="tourNextButton"
+            type="button"
+          >
+            Siguiente
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
